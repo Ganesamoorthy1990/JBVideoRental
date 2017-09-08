@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="JBVideo_RentalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password_Hash" Type="nvarchar(max)" />
+          <Property Name="Security_Stamp" Type="nvarchar(max)" />
+          <Property Name="Phone_Number" Type="bigint" Nullable="false" />
+          <Property Name="Aadhar_Number" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Is_Deleted" Type="bit" Nullable="false" />
+          <Property Name="Create_Time_Stamp" Type="datetime" Nullable="false" />
+          <Property Name="Update_Time_Stamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Movie_Details">
+          <Key>
+            <PropertyRef Name="Movie_Id" />
+          </Key>
+          <Property Name="Movie_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Movie_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Genre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Birth_Date" Type="date" Nullable="false" />
+          <Property Name="Movies_In_Stock" Type="int" Nullable="false" />
+          <Property Name="Movies_Availablility" Type="int" Nullable="false" />
+          <Property Name="Account_Number" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Video_File" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Is_Subscribed_To_Newletter" Type="bit" Nullable="false" />
+          <Property Name="Is_Deleted" Type="bit" Nullable="false" />
+          <Property Name="Create_Time_Stamp" Type="datetime" Nullable="false" />
+          <Property Name="Update_Time_Stamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Customer_Details_Customer_Details">
+          <End Role="Customer_Details" Type="Self.Customer_Details" Multiplicity="1" />
+          <End Role="Customer_Details1" Type="Self.Customer_Details" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Details">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer_Details1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movie_Details_Customer_Details1">
+          <End Role="Customer_Details" Type="Self.Customer_Details" Multiplicity="1" />
+          <End Role="Movie_Details" Type="Self.Movie_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Details">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Movie_Details">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JBVideo_RentalModelStoreContainer">
+          <EntitySet Name="Customer_Details" EntityType="Self.Customer_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Movie_Details" EntityType="Self.Movie_Details" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customer_Details_Customer_Details" Association="Self.FK_Customer_Details_Customer_Details">
+            <End Role="Customer_Details" EntitySet="Customer_Details" />
+            <End Role="Customer_Details1" EntitySet="Customer_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movie_Details_Customer_Details1" Association="Self.FK_Movie_Details_Customer_Details1">
+            <End Role="Customer_Details" EntitySet="Customer_Details" />
+            <End Role="Movie_Details" EntitySet="Movie_Details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JBVideo_RentalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password_Hash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Security_Stamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone_Number" Type="Int64" Nullable="false" />
+          <Property Name="Aadhar_Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Is_Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Create_Time_Stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Update_Time_Stamp" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customer_Details1" Relationship="JBVideo_RentalModel.FK_Customer_Details_Customer_Details" FromRole="Customer_Details" ToRole="Customer_Details1" />
+          <NavigationProperty Name="Customer_Details2" Relationship="JBVideo_RentalModel.FK_Customer_Details_Customer_Details" FromRole="Customer_Details1" ToRole="Customer_Details" />
+          <NavigationProperty Name="Movie_Details" Relationship="JBVideo_RentalModel.FK_Movie_Details_Customer_Details1" FromRole="Customer_Details" ToRole="Movie_Details" />
+        </EntityType>
+        <EntityType Name="Movie_Details">
+          <Key>
+            <PropertyRef Name="Movie_Id" />
+          </Key>
+          <Property Name="Movie_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Movie_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Birth_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Movies_In_Stock" Type="Int32" Nullable="false" />
+          <Property Name="Movies_Availablility" Type="Int32" Nullable="false" />
+          <Property Name="Account_Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Video_File" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Is_Subscribed_To_Newletter" Type="Boolean" Nullable="false" />
+          <Property Name="Is_Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Create_Time_Stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Update_Time_Stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Customer_Details" Relationship="JBVideo_RentalModel.FK_Movie_Details_Customer_Details1" FromRole="Movie_Details" ToRole="Customer_Details" />
+        </EntityType>
+        <EntityContainer Name="JBVideo_RentalEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customer_Details" EntityType="Self.Customer_Details" />
+          <EntitySet Name="Movie_Details" EntityType="Self.Movie_Details" />
+          <AssociationSet Name="FK_Customer_Details_Customer_Details" Association="JBVideo_RentalModel.FK_Customer_Details_Customer_Details">
+            <End Role="Customer_Details" EntitySet="Customer_Details" />
+            <End Role="Customer_Details1" EntitySet="Customer_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movie_Details_Customer_Details1" Association="JBVideo_RentalModel.FK_Movie_Details_Customer_Details1">
+            <End Role="Customer_Details" EntitySet="Customer_Details" />
+            <End Role="Movie_Details" EntitySet="Movie_Details" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Customer_Details_Customer_Details">
+          <End Type="JBVideo_RentalModel.Customer_Details" Role="Customer_Details" Multiplicity="1" />
+          <End Type="JBVideo_RentalModel.Customer_Details" Role="Customer_Details1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Details">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer_Details1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movie_Details_Customer_Details1">
+          <End Type="JBVideo_RentalModel.Customer_Details" Role="Customer_Details" Multiplicity="1" />
+          <End Type="JBVideo_RentalModel.Movie_Details" Role="Movie_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Details">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Movie_Details">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JBVideo_RentalModelStoreContainer" CdmEntityContainer="JBVideo_RentalEntities1">
+          <EntitySetMapping Name="Customer_Details">
+            <EntityTypeMapping TypeName="JBVideo_RentalModel.Customer_Details">
+              <MappingFragment StoreEntitySet="Customer_Details">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Password_Hash" ColumnName="Password_Hash" />
+                <ScalarProperty Name="Security_Stamp" ColumnName="Security_Stamp" />
+                <ScalarProperty Name="Phone_Number" ColumnName="Phone_Number" />
+                <ScalarProperty Name="Aadhar_Number" ColumnName="Aadhar_Number" />
+                <ScalarProperty Name="Is_Deleted" ColumnName="Is_Deleted" />
+                <ScalarProperty Name="Create_Time_Stamp" ColumnName="Create_Time_Stamp" />
+                <ScalarProperty Name="Update_Time_Stamp" ColumnName="Update_Time_Stamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movie_Details">
+            <EntityTypeMapping TypeName="JBVideo_RentalModel.Movie_Details">
+              <MappingFragment StoreEntitySet="Movie_Details">
+                <ScalarProperty Name="Movie_Id" ColumnName="Movie_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Movie_Name" ColumnName="Movie_Name" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Birth_Date" ColumnName="Birth_Date" />
+                <ScalarProperty Name="Movies_In_Stock" ColumnName="Movies_In_Stock" />
+                <ScalarProperty Name="Movies_Availablility" ColumnName="Movies_Availablility" />
+                <ScalarProperty Name="Account_Number" ColumnName="Account_Number" />
+                <ScalarProperty Name="Video_File" ColumnName="Video_File" />
+                <ScalarProperty Name="Is_Subscribed_To_Newletter" ColumnName="Is_Subscribed_To_Newletter" />
+                <ScalarProperty Name="Is_Deleted" ColumnName="Is_Deleted" />
+                <ScalarProperty Name="Create_Time_Stamp" ColumnName="Create_Time_Stamp" />
+                <ScalarProperty Name="Update_Time_Stamp" ColumnName="Update_Time_Stamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

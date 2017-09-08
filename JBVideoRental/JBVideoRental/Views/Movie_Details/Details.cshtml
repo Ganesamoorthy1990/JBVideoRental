@@ -1,0 +1,115 @@
+﻿@model JBVideoRental.Models.Movie_Details
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Movie_Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Movie_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Birth_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birth_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Movies_In_Stock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Movies_In_Stock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Movies_Availablility)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Movies_Availablility)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Account_Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account_Number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Video_File)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Video_File)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Is_Subscribed_To_Newletter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_Subscribed_To_Newletter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Is_Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_Deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Create_Time_Stamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Create_Time_Stamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Update_Time_Stamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Update_Time_Stamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer_Details.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer_Details.Email)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Movie_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
