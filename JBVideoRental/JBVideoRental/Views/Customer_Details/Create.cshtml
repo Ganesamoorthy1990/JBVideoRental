@@ -1,14 +1,17 @@
 ﻿@model JBVideoRental.ViewModel.Customer_Details_ViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/passwordscheck.css" rel="stylesheet" />
 
-<h2>Create</h2>
+<h2>Register</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create","Customer_Details",FormMethod.Post,new { id = "signupform" }))
 {
     @Html.AntiForgeryToken()
     
@@ -19,7 +22,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -28,15 +31,16 @@
          
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(model => model.Password,  new { @class = "form-control", @id="password", @placeholder = "Password" } )
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                <span id="result"></span>
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" } )
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Phone_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Phone_Number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Phone_Number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number" } })
                 @Html.ValidationMessageFor(model => model.Phone_Number, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -52,7 +56,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Aadhar_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Aadhar_Number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Aadhar_Number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Aadhar" } })
                 @Html.ValidationMessageFor(model => model.Aadhar_Number, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,4 +75,48 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+
+
+<script>
+    $(function () {
+
+        debugger;
+        $("#signupform").validate({
+   
+            rules: {
+                Email:
+                    {
+                        required: true,
+                        email:true
+                    },
+                Password:
+                    {
+                        required: true
+                   
+
+                    },
+                ConfirmPassword:
+                    {
+                        required: true
+                    }
+
+            },
+            messages: {
+                Email: {
+                    required: "Please enter the Email Id",
+                    email:"Please enter valid email address"
+                },
+                Password:{
+                   required: "Please enter the Password"
+               },
+                ConfirmPassword:
+                    {
+                        required: "Please Enter the Confirm Password"
+                    }
+            }
+        });
+    });
+
+</script>
 }

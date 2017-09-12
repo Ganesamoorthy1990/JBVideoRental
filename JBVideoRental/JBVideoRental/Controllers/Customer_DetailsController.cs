@@ -7,130 +7,99 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using JBVideoRental.Models;
+using JBVideoRental.ViewModel;
+using System.Data.Entity.Infrastructure;
 
 namespace JBVideoRental.Controllers
 {
     public class Customer_DetailsController : Controller
     {
-        private JBVideo_RentalEntities1 db = new JBVideo_RentalEntities1();
-
+ JBVideo_RentalEntities1 db = new JBVideo_RentalEntities1();
         // GET: Customer_Details
-        public ActionResult Index()
-        {
-            var customer_Details = db.Customer_Details.Include(c => c.Customer_Details1).Include(c => c.Customer_Details2);
-            return View(customer_Details.ToList());
-        }
 
-        // GET: Customer_Details/Details/5
-        public ActionResult Details(long? id)
+        [HttpGet]
+        public ActionResult Index(int? id)
         {
-            if (id == null)
+            if (id != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer_Details customer_Details = db.Customer_Details.Find(id);
-            if (customer_Details == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer_Details);
-        }
+                Customer_Details cd = db.Customer_Details.Find(id);
+                var viewmodel = new Customer_Details_ViewModel
+                {
+                    Email = cd.Email,
+                    Password = cd.Password,
+                    Phone_Number = cd.Phone_Number,
+                    Aadhar_Number = cd.Aadhar_Number
 
-        // GET: Customer_Details/Create
-        public ActionResult Create()
-        {
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email");
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email");
+                };
+                return View(viewmodel);
+            }
             return View();
         }
 
-        // POST: Customer_Details/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Email,Password,Password_Hash,Security_Stamp,Phone_Number,Aadhar_Number,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp")] Customer_Details customer_Details)
+       public ActionResult Login()
         {
-            if (ModelState.IsValid)
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(Customer_Details_ViewModel customer)
+        {
+            var login = (from n in db.Customer_Details where !n.Is_Deleted & n.Email == customer.Email & n.Password == customer.Password select n).Count();
+            long id = (from n in db.Customer_Details where !n.Is_Deleted & n.Email == customer.Email & n.Password == customer.Password select n.Id).SingleOrDefault();
+            if (login==1 & id==1)
             {
-                db.Customer_Details.Add(customer_Details);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
-
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            return View(customer_Details);
+            else if(login == 1 & id!=0)
+            {
+                return RedirectToAction("Create");
+            }
+                return View();
         }
 
-        // GET: Customer_Details/Edit/5
-        public ActionResult Edit(long? id)
+
+        public ActionResult Create()
         {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(int? id, Customer_Details_ViewModel cv)
+        {
+            Customer_Details cd = new Customer_Details();
+            cd.Email = cv.Email;
+            cd.Password = cv.Password;
+            cd.Phone_Number = cv.Phone_Number;
+            cd.Aadhar_Number = cv.Aadhar_Number;
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                db.SP_NewUser(cd.Email, cd.Password, cd.Phone_Number, cd.Aadhar_Number);
+
             }
-            Customer_Details customer_Details = db.Customer_Details.Find(id);
-            if (customer_Details == null)
+            else
             {
-                return HttpNotFound();
+                db.SP_UpdateCustomer(id, cd.Email, cd.Password, cd.Phone_Number, cd.Aadhar_Number);
             }
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            return View(customer_Details);
+            db.SaveChanges();
+            return RedirectToAction("Home");
         }
 
-        // POST: Customer_Details/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,Password,Password_Hash,Security_Stamp,Phone_Number,Aadhar_Number,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp")] Customer_Details customer_Details)
+
+
+        public ActionResult Details()
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(customer_Details).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            ViewBag.Id = new SelectList(db.Customer_Details, "Id", "Email", customer_Details.Id);
-            return View(customer_Details);
+            int count = (from register in db.Customer_Details where !register.Is_Deleted select register).Count();
+            ViewBag.Total = count;
+            var CustomerDetails = from register in db.Customer_Details where !register.Is_Deleted select register;
+            return View(CustomerDetails);
         }
 
-        // GET: Customer_Details/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer_Details customer_Details = db.Customer_Details.Find(id);
-            if (customer_Details == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer_Details);
-        }
-
-        // POST: Customer_Details/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
-        {
-            Customer_Details customer_Details = db.Customer_Details.Find(id);
-            db.Customer_Details.Remove(customer_Details);
+            db.SP_DeleteCustomer(id);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
+        
     }
 }

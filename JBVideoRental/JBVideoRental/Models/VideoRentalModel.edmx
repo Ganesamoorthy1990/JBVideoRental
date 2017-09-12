@@ -62,6 +62,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SP_DeleteCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="SP_NewUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Phone_Number" Type="bigint" Mode="In" />
+          <Parameter Name="Aadhar_Number" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_UpdateCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="bigint" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Phone_Number" Type="bigint" Mode="In" />
+          <Parameter Name="Aadhar_Number" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_ViewCustomer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="JBVideo_RentalModelStoreContainer">
           <EntitySet Name="Customer_Details" EntityType="Self.Customer_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Movie_Details" EntityType="Self.Movie_Details" Schema="dbo" store:Type="Tables" />
@@ -126,6 +143,23 @@
             <End Role="Customer_Details" EntitySet="Customer_Details" />
             <End Role="Movie_Details" EntitySet="Movie_Details" />
           </AssociationSet>
+          <FunctionImport Name="SP_DeleteCustomer">
+          <Parameter Name="Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="SP_NewUser">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Phone_Number" Mode="In" Type="Int64" />
+            <Parameter Name="Aadhar_Number" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_UpdateCustomer">
+            <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Phone_Number" Mode="In" Type="Int64" />
+            <Parameter Name="Aadhar_Number" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_ViewCustomer" ReturnType="Collection(JBVideo_RentalModel.SP_ViewCustomer_Result)" />
         </EntityContainer>
         <Association Name="FK_Customer_Details_Customer_Details">
           <End Type="JBVideo_RentalModel.Customer_Details" Role="Customer_Details" Multiplicity="1" />
@@ -151,6 +185,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SP_ViewCustomer_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Password_Hash" Nullable="true" />
+          <Property Type="String" Name="Security_Stamp" Nullable="true" />
+          <Property Type="Int64" Name="Phone_Number" Nullable="false" />
+          <Property Type="String" Name="Aadhar_Number" Nullable="false" />
+          <Property Type="Boolean" Name="Is_Deleted" Nullable="false" />
+          <Property Type="DateTime" Name="Create_Time_Stamp" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Update_Time_Stamp" Nullable="true" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -192,6 +238,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_DeleteCustomer" FunctionName="JBVideo_RentalModel.Store.SP_DeleteCustomer" />
+          <FunctionImportMapping FunctionImportName="SP_NewUser" FunctionName="JBVideo_RentalModel.Store.SP_NewUser" />
+          <FunctionImportMapping FunctionImportName="SP_UpdateCustomer" FunctionName="JBVideo_RentalModel.Store.SP_UpdateCustomer" />
+          <FunctionImportMapping FunctionImportName="SP_ViewCustomer" FunctionName="JBVideo_RentalModel.Store.SP_ViewCustomer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JBVideo_RentalModel.SP_ViewCustomer_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Password_Hash" ColumnName="Password_Hash" />
+                <ScalarProperty Name="Security_Stamp" ColumnName="Security_Stamp" />
+                <ScalarProperty Name="Phone_Number" ColumnName="Phone_Number" />
+                <ScalarProperty Name="Aadhar_Number" ColumnName="Aadhar_Number" />
+                <ScalarProperty Name="Is_Deleted" ColumnName="Is_Deleted" />
+                <ScalarProperty Name="Create_Time_Stamp" ColumnName="Create_Time_Stamp" />
+                <ScalarProperty Name="Update_Time_Stamp" ColumnName="Update_Time_Stamp" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

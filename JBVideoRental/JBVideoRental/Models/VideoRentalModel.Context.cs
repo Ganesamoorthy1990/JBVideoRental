@@ -12,6 +12,8 @@ namespace JBVideoRental.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class JBVideo_RentalEntities1 : DbContext
     {
@@ -27,5 +29,65 @@ namespace JBVideoRental.Models
     
         public virtual DbSet<Customer_Details> Customer_Details { get; set; }
         public virtual DbSet<Movie_Details> Movie_Details { get; set; }
+    
+        public virtual int SP_DeleteCustomer(Nullable<long> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_DeleteCustomer", idParameter);
+        }
+    
+        public virtual int SP_NewUser(string email, string password, Nullable<long> phone_Number, string aadhar_Number)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var phone_NumberParameter = phone_Number.HasValue ?
+                new ObjectParameter("Phone_Number", phone_Number) :
+                new ObjectParameter("Phone_Number", typeof(long));
+    
+            var aadhar_NumberParameter = aadhar_Number != null ?
+                new ObjectParameter("Aadhar_Number", aadhar_Number) :
+                new ObjectParameter("Aadhar_Number", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_NewUser", emailParameter, passwordParameter, phone_NumberParameter, aadhar_NumberParameter);
+        }
+    
+        public virtual int SP_UpdateCustomer(Nullable<long> id, string email, string password, Nullable<long> phone_Number, string aadhar_Number)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(long));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var phone_NumberParameter = phone_Number.HasValue ?
+                new ObjectParameter("Phone_Number", phone_Number) :
+                new ObjectParameter("Phone_Number", typeof(long));
+    
+            var aadhar_NumberParameter = aadhar_Number != null ?
+                new ObjectParameter("Aadhar_Number", aadhar_Number) :
+                new ObjectParameter("Aadhar_Number", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_UpdateCustomer", idParameter, emailParameter, passwordParameter, phone_NumberParameter, aadhar_NumberParameter);
+        }
+    
+        public virtual ObjectResult<SP_ViewCustomer_Result> SP_ViewCustomer()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ViewCustomer_Result>("SP_ViewCustomer");
+        }
     }
 }

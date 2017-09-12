@@ -1,0 +1,20 @@
+﻿@model JBVideoRental.ViewModel.Customer_Details_ViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+@using (Html.BeginForm("Login", "Customer_Details", FormMethod.Post,new { @id = "LoginForm" }))
+{
+<table>
+    <tr>
+      <td>UserName:</td><td></td><td>@Html.TextBoxFor(model=>model.Email,new {@class="form-control",@id="txtEmail" })</td>
+    </tr>
+    <tr><td>Password:</td><td></td><td>@Html.PasswordFor(model => model.Password, new { @class = "form-control",@id="txtPassword" })</td></tr>
+    <tr><td></td><td><input type="submit" id="LoginSubmit" /></td><td></td></tr>
+</table>
+
+
+}
