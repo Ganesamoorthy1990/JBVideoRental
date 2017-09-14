@@ -4,41 +4,49 @@
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+
 <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<link href="~/Content/passwordscheck.css" rel="stylesheet" />
-
-<h2>Register</h2>
 
 
-@using (Html.BeginForm("Create","Customer_Details",FormMethod.Post,new { id = "signupform" }))
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link href="~/Content/password.css" rel="stylesheet" />
+<script src="~/Scripts/password.js"></script>
+<h2>Customer Register</h2>
+
+
+@using (Html.BeginForm("","",FormMethod.Post,new { @id = "formvalidate" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Customer_Details</h4>
+        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class = "control-label col-md-2" ><span class="error">*</span>Email:</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email", @id= "txt_Email"} })
+                <span id="spn_EmailId" style="font-weight:bold"></span>
             </div>
         </div>
 
         <div class="form-group">
-         
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <label class="control-label col-md-2"><span class="error">*</span>Password:</label>
             <div class="col-md-10">
-                @Html.PasswordFor(model => model.Password,  new { @class = "form-control", @id="password", @placeholder = "Password" } )
+                
+                @Html.PasswordFor(model => model.Password,  new { @class = "form-control", @id="password", @placeholder = "password",} )
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                 <span id="result"></span>
+                
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2"><span class="error">*</span>Confirm Password:</label>
             <div class="col-md-10">
                 @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" } )
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
@@ -49,21 +57,21 @@
             @Html.LabelFor(model => model.Phone_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Phone_Number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number" } })
-                @Html.ValidationMessageFor(model => model.Phone_Number, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Aadhar_Number, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2"><span class="error">*</span>Aadhar Number:</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Aadhar_Number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Aadhar" } })
-                @Html.ValidationMessageFor(model => model.Aadhar_Number, "", new { @class = "text-danger" })
+                
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <button id="btnCreate" class="btn btn-default"> submit</button>
+                @*<input type="submit" value="Create" class="btn btn-default" id="btnCreate" />*@
             </div>
         </div>
     </div>
@@ -79,41 +87,75 @@
 
 
 <script>
-    $(function () {
+    $(document).ready(function () {
+        alert('welcome')
+        
+        // Showing the progress bar since the first moment.
+        $('#password').password({
+            animate: false
+            // Check out the readme or directly jquery.password.js
+            // for a detailed list of properties.
+        });
+        
+        $("#btnCreate").click(function () {
+            // alert('button click')
+        
+            $("#formvalidate").validate({
 
-        debugger;
-        $("#signupform").validate({
-   
             rules: {
                 Email:
                     {
-                        required: true,
-                        email:true
+                        required: true
                     },
                 Password:
                     {
                         required: true
-                   
-
                     },
                 ConfirmPassword:
                     {
                         required: true
+                    },
+                Aadhar_Number:
+                    {
+                        required: true
                     }
-
             },
             messages: {
                 Email: {
-                    required: "Please enter the Email Id",
-                    email:"Please enter valid email address"
+                    required: "Please enter the Email Id"
+
                 },
-                Password:{
+                Password: {
                    required: "Please enter the Password"
-               },
-                ConfirmPassword:
-                    {
-                        required: "Please Enter the Confirm Password"
-                    }
+                },
+                ConfirmPassword: {
+                    required: "Please enter the ConfirmPassword"
+                },
+                Aadhar_Number: {
+                    required: "Please enter the Aadhar_Number"
+                }
+
+            }
+        });
+        });
+        $('#txt_Email').change(function () {
+            debugger;
+            var emailId = $('#txt_Email').val();
+            var spnErrorMsz = $('#spn_EmailId');
+            var email = $.trim(emailId);
+            if (email != null || email != " ") {
+
+                $.post("/Customer_Details/CheckEmailExistOrNot", { Email_Id: emailId },
+                    function (data) {
+                        if (data === true) {
+                            $('#spn_EmailId').text('Email Id is already exist, Please Login').css('color', 'red');
+                        }
+                        else {
+                            $('#spn_EmailId').text('Email Id is available').css('color', 'green').fadeOut(5000);
+                        }
+
+
+                    });
             }
         });
     });

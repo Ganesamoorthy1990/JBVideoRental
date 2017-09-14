@@ -10,7 +10,8 @@ namespace JBVideoRental.ViewModel
     public class Customer_Details_ViewModel
     {
         public long Id { get; set; }
-        [Required(ErrorMessage = "Email is required")]
+    
+       // (ErrorMessage = "Email is required")
         public string Email { get; set; }
         public string Password { get; set; }
         [Display(Name = "Confirm Password")]

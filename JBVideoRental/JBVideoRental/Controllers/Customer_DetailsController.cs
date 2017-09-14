@@ -99,7 +99,43 @@ namespace JBVideoRental.Controllers
             return RedirectToAction("Details");
         }
 
+        public bool CheckEmail(string Email_Id,string Password)
+        {
+            bool emailExit = false;
+            if (!string.IsNullOrEmpty(Email_Id)|| !string.IsNullOrEmpty(Password))
+            {
+                emailExit = db.Customer_Details.Any(x => x.Email== Email_Id && x.Password== Password);
+                //emailExit = true;
+            }
+            return emailExit;
 
-        
+            
+
+        }
+public JsonResult CheckEmailExistOrNot(string Email_Id, string Password)
+        {
+
+            return Json(CheckEmail(Email_Id,Password), JsonRequestBehavior.AllowGet);
+        }
+
+        public bool CheckPassword(string password)
+        {
+            bool PasswordExit = false;
+            if (!string.IsNullOrEmpty(password))
+            {
+                PasswordExit = db.Customer_Details.Any(x => x.Password == password);
+                //emailExit = true;
+            }
+            return PasswordExit;
+
+
+
+        }
+        public JsonResult CheckPasswordExistOrNot(string password)
+        {
+
+            return Json(CheckPassword(password), JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

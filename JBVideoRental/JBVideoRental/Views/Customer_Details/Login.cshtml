@@ -4,17 +4,132 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .error {
+        color: red;
+    }
+    </style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
 <h2>Login</h2>
-@using (Html.BeginForm("Login", "Customer_Details", FormMethod.Post,new { @id = "LoginForm" }))
+@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "LoginForm" }))
 {
-<table>
-    <tr>
-      <td>UserName:</td><td></td><td>@Html.TextBoxFor(model=>model.Email,new {@class="form-control",@id="txtEmail" })</td>
-    </tr>
-    <tr><td>Password:</td><td></td><td>@Html.PasswordFor(model => model.Password, new { @class = "form-control",@id="txtPassword" })</td></tr>
-    <tr><td></td><td><input type="submit" id="LoginSubmit" /></td><td></td></tr>
-</table>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2"><span class="error">*</span>Email Id:</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "txt_Email" })
+            </div>
+          
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2"><span class="error">*</span>Password:</label>
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @id = "txt_Password" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button  class="btn btn-default" id="btnSubmit"> submit</button>
+              
+            </div>
+            <center> <span id="spn_Display" style="font-weight:bold"></span></center>
+          
+        </div>
+        </div>
+        }
+        <script>
+            $(document).ready(function () {
+                $('#btnSubmit').click(function () {
+
+                //$('#txt_Email').change(function () {
+                    debugger;
+                    var emailId = $('#txt_Email').val();
+                    var passwordId = $('#txt_Password').val();
+                    var spnErrorMsz = $('#spn_Display');
+                    var email = $.trim(emailId);
+                    var password = $.trim(passwordId);
+                    if (email != null || email != " " || password != null || password != " ") {
+                       
+                        $.post("/Customer_Details/CheckEmailExistOrNot", { Email_Id: emailId, password: passwordId },
+                       function (data) {
+                           if (data === true) {
+                               $('#spn_Display').text(' ').css('color', 'red');
+                           }
+                           else {
+                              
+                               alert("Invalid user name or password");
+                               $("form").submit(function (e) {
+                                   e.preventDefault();
+                               });
+                              // $('#spn_Display').text('Invalid user name or password').css('color', 'red');
 
 
-}
+                           }
+
+
+                       });
+                        
+
+                    }
+                   
+                });
+
+
+                //$('#txt_Password').change(function () {
+                //    debugger;
+                //    var passwordId = $('#txt_Password').val();
+                //    var spnErrorMsz = $('#spn_Display');
+                //    var password = $.trim(passwordId);
+                //    if (password != null || password != " ") {
+                            
+                //        $.post("/Customer_Details/CheckPasswordExistOrNot", { password: passwordId },
+                //            function (data) {
+                //                if (data === true) {
+                //                    $('#spn_Display').text(' ').css('color', 'red');
+                //                }
+                //                else {
+
+                //                    //alert("Invalid user name or password");
+                //                    $('#spn_Display').text('Invalid user name or password').css('color', 'red');
+
+                //                }
+
+
+                //            });
+                            
+
+                //    }
+                   
+                //});
+
+
+                        $("#LoginForm").validate({
+
+                            rules: {
+                                Email:
+                                    {
+                                        required: true
+                                    },
+                                Password:
+                                    {
+                                        required: true
+                                    }
+
+                            },
+                            messages: {
+                                Email: {
+                                    required: "Please enter the Email Id"
+
+                                },
+                                Password: {
+                                    required: "Please enter the Password"
+                                }
+
+
+                            }
+                        });
+                    });
+           
+        </script>
