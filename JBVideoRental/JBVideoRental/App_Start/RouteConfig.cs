@@ -17,7 +17,14 @@ namespace JBVideoRental
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Customer_Details", action = "Login", id = UrlParameter.Optional }
-            );
+             );
+
+
+            routes.MapRoute(
+                name: "AdminSubFolder",
+                url: "admin/{controller}/{action}/{id}",
+                defaults: new { controller = "Customer_Details", action = "Login", id = UrlParameter.Optional }
+             );
         }
     }
 }

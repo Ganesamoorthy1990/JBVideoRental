@@ -89,5 +89,7 @@ namespace JBVideoRental.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_ViewCustomer_Result>("SP_ViewCustomer");
         }
+
+        public System.Data.Entity.DbSet<JBVideoRental.ViewModel.Customer_Details_ViewModel> Customer_Details_ViewModel { get; set; }
     }
 }

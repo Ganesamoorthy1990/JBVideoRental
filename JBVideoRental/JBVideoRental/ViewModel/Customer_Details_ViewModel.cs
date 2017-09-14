@@ -21,5 +21,6 @@ namespace JBVideoRental.ViewModel
         public long Phone_Number { get; set; }
         [Display(Name = "Aadhar Number ")]
         public string Aadhar_Number { get; set; }
+       public DateTime Update_Time_Stamp { get; set; }
     }
 }

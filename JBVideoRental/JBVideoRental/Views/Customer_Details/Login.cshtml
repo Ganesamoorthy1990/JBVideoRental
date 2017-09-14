@@ -8,7 +8,7 @@
     .error {
         color: red;
     }
-    </style>
+</style>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
 <h2>Login</h2>
@@ -20,7 +20,7 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "txt_Email" })
             </div>
-          
+
         </div>
 
         <div class="form-group">
@@ -31,15 +31,15 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <button  class="btn btn-default" id="btnSubmit"> submit</button>
-              
+                <button class="btn btn-default" id="btnSubmit"> submit</button>
+
             </div>
             <center> <span id="spn_Display" style="font-weight:bold"></span></center>
-          
+
         </div>
-        </div>
-        }
-        <script>
+    </div>
+}
+<script>
             $(document).ready(function () {
                 $('#btnSubmit').click(function () {
 
@@ -51,15 +51,16 @@
                     var email = $.trim(emailId);
                     var password = $.trim(passwordId);
                     if (email != null || email != " " || password != null || password != " ") {
-                       
+
                         $.post("/Customer_Details/CheckEmailExistOrNot", { Email_Id: emailId, password: passwordId },
                        function (data) {
                            if (data === true) {
                                $('#spn_Display').text(' ').css('color', 'red');
                            }
                            else {
-                              
+
                                alert("Invalid user name or password");
+                               
                                $("form").submit(function (e) {
                                    e.preventDefault();
                                });
@@ -70,10 +71,10 @@
 
 
                        });
-                        
+
 
                     }
-                   
+
                 });
 
 
@@ -83,7 +84,7 @@
                 //    var spnErrorMsz = $('#spn_Display');
                 //    var password = $.trim(passwordId);
                 //    if (password != null || password != " ") {
-                            
+
                 //        $.post("/Customer_Details/CheckPasswordExistOrNot", { password: passwordId },
                 //            function (data) {
                 //                if (data === true) {
@@ -98,10 +99,10 @@
 
 
                 //            });
-                            
+
 
                 //    }
-                   
+
                 //});
 
 
@@ -131,5 +132,5 @@
                             }
                         });
                     });
-           
-        </script>
+
+</script>
